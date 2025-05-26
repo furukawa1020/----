@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LoopCut Mini</string>
+    <string name="title">LoopCut Mini</string>
+    <string name="status_monitoring">監視中...</string>
+    <string name="notification_channel_name">LoopCut Mini</string>
+    <string name="notification_channel_description">反芻思考を監視する通知</string>
+</resources>
