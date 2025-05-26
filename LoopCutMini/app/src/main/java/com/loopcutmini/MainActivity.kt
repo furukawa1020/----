@@ -39,9 +39,6 @@ class MainActivity : AppCompatActivity() {
         // UIの初期化
         initializeUI()
         
-        // サービスの開始
-        startMonitoringService()
-        
         // バッテリーレシーバーの登録
         LocalBroadcastManager.getInstance(this)
             .registerReceiver(batteryStatusReceiver, IntentFilter(BATTERY_LEVEL_CHANGED))
@@ -56,4 +53,52 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
     
-    // ... 既存のコード ...
+    private fun initializeUI() {
+        // ステータスの初期化
+        statusText.text = "停止中"
+        monitoringStatus.text = "監視状態: 未アクティブ"
+        
+        // モニタリングボタンの設定
+        monitoringButton.setOnClickListener {
+            toggleMonitoring()
+        }
+        
+        // オプションボタンの設定
+        optionsButton.setOnClickListener {
+            // 設定画面への遷移を実装
+        }
+    }
+    
+    private fun toggleMonitoring() {
+        isMonitoring = !isMonitoring
+        if (isMonitoring) {
+            monitoringButton.text = "監視停止"
+            statusText.text = "監視中..."
+            monitoringStatus.text = "監視状態: アクティブ"
+            startMonitoringService()
+        } else {
+            monitoringButton.text = "監視開始"
+            statusText.text = "停止中"
+            monitoringStatus.text = "監視状態: 未アクティブ"
+            stopMonitoringService()
+        }
+    }
+    
+    private fun startMonitoringService() {
+        if (isMonitoring) {
+            Intent(this, AudioMonitoringService::class.java).also { intent ->
+                startService(intent)
+            }
+        }
+    }
+    
+    private fun stopMonitoringService() {
+        Intent(this, AudioMonitoringService::class.java).also { intent ->
+            stopService(intent)
+        }
+    }
+    
+    private fun updateBatteryStatus(level: Int) {
+        batteryStatus.text = "バッテリー: $level%"
+    }
+}
